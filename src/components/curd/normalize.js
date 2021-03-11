@@ -4,8 +4,6 @@ import _URL from 'url'
 import dayjs  from 'dayjs'
 import util from '@/libs/util';
 export { uploadApi } from '@/api/sys.upload'
-
-
 /** 
  * 预设几个按钮按钮配置（写死的）
 */
@@ -97,22 +95,39 @@ export let tableGlobalDynamicActions = [
         }
     },
     {
-        name: 'config-tpl',
-        type: 'text',
-        label: '配置',
-        async handler({id, content}) {
-            if (!id) {
-                this.$message.warning(`当前点选项ID不存在`)
-                return
-            }
-            this.$router.push({
-              name: 'templateConfig',
-              params: {
-                id
+      name:'launch',
+      type:'text',
+      label:'启动分流',
+      async handler({id}){
+          // this指向tabel Vue实例
+          // let url = this.config.api + '/' + id;
+          // if(!url){
+          //     return
+          // }
+          // url = await copyUrlWithSign(url);
+          // let { host , protocol } = _URL.parse(url);
+          // if (this.config.public_api) {
+          //   url = url.replace(protocol+'//'+host,this.config.public_api)
+          // } else {
+          //   url = util.replaceUrlByEnv(url)
+          // }
+          // copyStr(url)
+          // this.$message.success('已复制')
+          console.log(this.config.api)
+          let res = await _fetch({
+              url:this.config.api.launch.api,
+              method:this.config.api.launch.m,
+              data:{
+                layer_id:id
               }
-            })
-        }
-    }
+          })
+          if(res.status === 1){
+            this.$message.success(res.msg)
+          }else{
+            this.$message.error(res.msg)
+          }
+      }
+  },
 ]
 
 
@@ -125,11 +140,12 @@ export let tableGlobalDynamicActions = [
  * }
 */
 export function processUploadRes(res){
-    return {
-        statusCode:res.code === 0 ? 200 : -1,
-        uri:res.data,
-        suffix_name:res.data
-    }
+    // return {
+    //     statusCode:res.code === 0 ? 200 : -1,
+    //     uri:res.data,
+    //     suffix_name:res.data
+    // }
+    return res
 }
 
 // 表格的默认展示列合集

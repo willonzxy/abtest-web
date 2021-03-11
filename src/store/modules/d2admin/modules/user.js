@@ -16,7 +16,6 @@ export default {
      * @param {*} info info
      */
     async set ({ state, dispatch }, info) {
-      console.log(1,info)
       // info.admin = 1;
       // store 赋值
       state.info = {

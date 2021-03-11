@@ -248,7 +248,7 @@ export async function getLazyData(attr,api){
                 data = await api();
             }
             if(data.data){
-                data = data.data;
+                data = data.data.list;
             }
             // console.log(data)
             let widget_config = this.getFormAttrConfig(k);

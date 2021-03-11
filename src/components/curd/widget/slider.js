@@ -11,7 +11,7 @@ export default ({props,listeners,data})=>{
         class:data.class,
         staticClass:data.staticClass,
         attrs:{
-            size:'small',
+            size:'mini',
             max:100,
             ...config
         }

@@ -20,7 +20,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
     // 接口请求
     return _fetch({
       url: dataManagerApi.login.api,
-      method: 'post',
+      method: dataManagerApi.login.m,
       data,
       // headers:{
       //   'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -41,7 +41,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
     // 接口请求
     return _fetch({
       url: dataManagerApi.getSession.api,
-      method: 'get',
+      method: dataManagerApi.getSession.m,
       // headers:{
       //   'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       // }

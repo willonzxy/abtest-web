@@ -9,7 +9,7 @@ import { deep_clone } from '@/components/curd/util';
 import { numAndEn } from '@/components/curd/form/rule.js'
 import jsMd5 from 'js-md5'
 export default {
-    name:'DataRecord',
+    name:'app-m',
     components:{
         Curd,
     },
@@ -20,7 +20,7 @@ export default {
                 defaultColumns:true,
                 api:dataManagerApi,
                 title:'应用管理',
-                actions:['edit','delete'],
+                actions:['edit'],
                 searchBarConfig:{
                     btn_group_center:'center',
                     actions:['submit','reset'],
@@ -66,6 +66,10 @@ export default {
                     {
                         key:'name',
                         title:'应用名称',
+                    },
+                    {
+                        key:'link',
+                        title:'应用链接',
                     },
                     {
                         key:'verbose',

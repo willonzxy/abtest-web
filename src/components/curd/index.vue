@@ -279,7 +279,7 @@ export default {
             // url = this.api.includes('${id}') ? url : /$\//.test(url) ? url+_id : url +'/'+_id;
             // console.log(url)
             let res = await _fetch({
-                url:this.api.del.api + '?id='+_id,
+                url:this.api.del.api + '/'+_id,
                 method:this.api.del.m||'delete',
             })
             // this.$message.success(res.message)
@@ -337,12 +337,9 @@ export default {
                 // if (qstring) url += `?${qstring}`
                 // res = await _fetch.put(url,data)
                 res = await _fetch({
-                    url:this.api.edit.api,
+                    url:this.api.edit.api+'/'+this.which,
                     method:this.api.edit.m||'put',
-                    data:{
-                        id:this.which,
-                        ...data
-                    }
+                    data:data
                 })
             }
             // 这里需要normalize一下
@@ -390,25 +387,28 @@ export default {
                 method:this.api.select.m||'get'
             }).finally(() => {this.loading = false});
             this.tableConfig.loading = false;
-            if(res && res.pageSize){
-                // 列表数据
-                this.paginationConfig.total = res.total;
-                let dataSource = this.config.onbeforerender ? await this.config.onbeforerender.call(this,res.data,res) : res.data;
-                this.tableConfig.dataSource = Object.freeze(dataSource);
-            }else if(res && !res.pageSize){
-                // 非列表数据
-                if(!Array.isArray(res)){
-                    if(!res.hasOwnProperty('id')){
-                        this.tableConfig.dataSource = []
-                        this.paginationConfig.total = 0;
-                        return
-                    }
-                    res = [res]
-                }
-                this.tableConfig.dataSource = Object.freeze(res);
-                // id 掺入了业务逻辑 哎!!!
-                res.hasOwnProperty('id') && (this.paginationConfig.total = 1);
-            }
+            // if(res && res.pageSize){
+            //     // 列表数据
+            //     this.paginationConfig.total = res.total;
+            //     let dataSource = this.config.onbeforerender ? await this.config.onbeforerender.call(this,res.data,res) : res.data;
+            //     this.tableConfig.dataSource = Object.freeze(dataSource);
+            // }else if(res && !res.pageSize){
+            //     // 非列表数据
+            //     if(!Array.isArray(res)){
+            //         if(!res.hasOwnProperty('id')){
+            //             this.tableConfig.dataSource = []
+            //             this.paginationConfig.total = 0;
+            //             return
+            //         }
+            //         res = [res]
+            //     }
+            //     this.tableConfig.dataSource = Object.freeze(res);
+            //     // id 掺入了业务逻辑 哎!!!
+            //     res.hasOwnProperty('id') && (this.paginationConfig.total = 1);
+            // }
+            this.paginationConfig.total = res.data.pageTotal;
+            let dataSource = this.config.onbeforerender ? await this.config.onbeforerender.call(this,res.data.list,res) : res.data.list;
+            this.tableConfig.dataSource = Object.freeze(dataSource);
             // //更新界面上显示的【数据集成接口】
             // this.$emit('search-url-update',url)
 //             this.tableConfig.dataSource = [{

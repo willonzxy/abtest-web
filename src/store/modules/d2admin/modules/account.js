@@ -29,10 +29,11 @@ export default {
       // const user_info = await api.getSessionInfo();
       // console.log(res)
       // var seed = (1 + Math.random()) * 1e6;
-      util.cookies.set('uuid', res.user_id)
-      util.cookies.set('token', res.user_id)
+      let user_id = res.data.user_id;
+      util.cookies.set('uuid',user_id)
+      util.cookies.set('token',user_id)
       // 设置 vuex 用户信息
-      await dispatch('d2admin/user/set', res , { root: true })
+      await dispatch('d2admin/user/set', res.data , { root: true })
       // 用户登录后从持久化数据加载一系列的设置
       await dispatch('load')
     },

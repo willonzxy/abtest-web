@@ -48,8 +48,9 @@ export const menuAside = supplementPath([
       // { path: '/index/store', title: '店铺管理', icon: 'home' },
       // { path: '/index/contract', title: '店铺协议管理', icon: 'calendar-o',admin:true}
       { path:'/index/app',title:'应用管理',icon:'home' },
-      { path:'/index/layer',title:'场景管理',icon:'home' },
-      { path:'/index/experiment',title:'实验管理',icon:'home' },
+      { path:'/index/layer',title:'场景管理',icon:'database' },
+      { path:'/index/experiment',title:'实验管理',icon:'pencil' },
+      // { path:'/index/launch',title:'启动分流',icon:'bank' },
     ]
   }
 ])

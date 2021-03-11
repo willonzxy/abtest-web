@@ -16,6 +16,10 @@ export const dataManagerApi = {
     del:{
         m:'delete',
         api:actionPrefix + '/layer'
+    },
+    launch:{
+        m:'post',
+        api:actionPrefix + '/launch'
     }
 }
 
