@@ -50,7 +50,7 @@ export const menuAside = supplementPath([
       { path:'/index/app',title:'应用管理',icon:'home' },
       { path:'/index/layer',title:'场景管理',icon:'database' },
       { path:'/index/experiment',title:'实验管理',icon:'pencil' },
-      // { path:'/index/launch',title:'启动分流',icon:'bank' },
+      { path:'/index/launch',title:'启动分流',icon:'rocket' },
     ]
   }
 ])

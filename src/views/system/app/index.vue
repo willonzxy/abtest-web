@@ -35,6 +35,7 @@ export default {
                                 {value:4,label:'IOS'}
                             ],
                         },
+                        { attr:'id',type:'input',label:'应用id',placeholder:"请输入应用id"},
                         { attr:'name',type:'input',label:'应用名称',placeholder:"请输入应用名称"},
                     ]
                 },
@@ -63,6 +64,10 @@ export default {
                     ]
                 },
                 tableConfig:[
+                    {
+                        key:'id',
+                        title:'应用id',
+                    },
                     {
                         key:'name',
                         title:'应用名称',

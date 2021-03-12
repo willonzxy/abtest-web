@@ -49,15 +49,15 @@ const frameIn = [
               auth: true
             },
           },
-          // {
-          //   path:'launch',
-          //   name:'launch',
-          //   component: _import('system/launch/index.vue'),
-          //   meta: {
-          //     title: '启动分流',
-          //     auth: true
-          //   },
-          // },
+          {
+            path:'launch',
+            name:'launch',
+            component: _import('system/launch/index.vue'),
+            meta: {
+              title: '启动分流',
+              auth: true
+            },
+          },
           {
             path:'user',
             name:'user',

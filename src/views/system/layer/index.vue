@@ -21,7 +21,7 @@ export default {
                 defaultColumns:true,
                 api:dataManagerApi,
                 title:'场景管理',
-                actions:['edit','launch'],
+                actions:['edit'],
                 searchBarConfig:{
                     btn_group_center:'center',
                     actions:['submit','reset'],
@@ -37,6 +37,14 @@ export default {
                         //     ],
                         // },
                         // { attr:'name',type:'input',label:'应用名称',placeholder:"请输入应用名称"},
+                        { 
+                            attr:'app_id',
+                            type:'lazy-select',
+                            api:app_data_api.select.api,
+                            show:'name',
+                            dataIndex:'id',
+                            label:'应用名称',
+                        },
                         { attr:'id',type:'input',label:'场景id',placeholder:"请输入场景id"},
                     ]
                 },
