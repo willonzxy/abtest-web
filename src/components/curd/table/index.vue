@@ -26,6 +26,12 @@
                     el-button(v-if="showDelBtn" type="danger" size="small" @click="remove(index)") 删除
                 div(v-else)
                     div(v-if="row.id !== null && typeof row.id !== 'undefiend'")
+                      template(v-if="config.render_first_action")
+                        template(v-if="index===0")
+                          el-button(v-if="showEditBtn" type="text" size="small"  @click="edit(row.id,row)") 调整
+                          //- el-popconfirm(title="这是一段内容确定删除吗？")
+                          el-button(v-if="showDelBtn && row.status <= 4  " type="text" size="small" class="red" @click="remove(row.id)") 结束
+                      template(v-else)
                         el-button(v-if="showEditBtn" type="text" size="small"  @click="edit(row.id,row)") 编辑
                         //- el-popconfirm(title="这是一段内容确定删除吗？")
                         el-button(v-if="showDelBtn" type="text" size="small" class="red" @click="remove(row.id)") 删除

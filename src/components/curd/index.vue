@@ -234,7 +234,8 @@ export default {
                 actions:this.config && this.config.actions || ['edit','delete'],
                 api:this.config && this.config.api,
                 public_api:this.config && this.config.public_api,
-                defaultColumns: this.config && this.config.defaultColumns
+                defaultColumns: this.config && this.config.defaultColumns,
+                render_first_action:this.config.render_first_action,
             }
         },
         handleAddFormConfig(){
@@ -286,7 +287,7 @@ export default {
             this.getTableData()
         },
         insertEntityDataReadyToEdit(_id,entity){
-            // console.log(_id,entity)
+            console.log(_id,entity)
             this.rouseEditModal();
             // this.$nextTick(()=>{
                 
@@ -319,7 +320,7 @@ export default {
             },200)
         },
         // 提交form表单
-        async submit(data){
+        async submit(data,api){
             // console.log(data)
             let res;
             // console.log(data)
@@ -327,7 +328,7 @@ export default {
             if(!this.editStatus){
                 // res = await _fetch.post(this.apiFmtObj.url,Object.assign({}, data, this.apiFmtObj.defaultQuery));
                 res = await _fetch({
-                    url:this.api.add.api,
+                    url:api || this.api.add.api,
                     method:this.api.add.m||'post',
                     data
                 })
@@ -406,7 +407,7 @@ export default {
             //     // id 掺入了业务逻辑 哎!!!
             //     res.hasOwnProperty('id') && (this.paginationConfig.total = 1);
             // }
-            this.paginationConfig.total = res.data.pageTotal;
+            this.paginationConfig.total = res.data.numTotal;
             let dataSource = this.config.onbeforerender ? await this.config.onbeforerender.call(this,res.data.list,res) : res.data.list;
             this.tableConfig.dataSource = Object.freeze(dataSource);
             // //更新界面上显示的【数据集成接口】

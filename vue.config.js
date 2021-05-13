@@ -83,7 +83,7 @@ module.exports = {
     publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:7001',
+        target: 'http://127.0.0.1:9384',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

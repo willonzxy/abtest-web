@@ -235,6 +235,9 @@ export async function getLazyData(attr,api){
         }
     }
     async function pullRemoteData(k,api){
+        if(!k || !api){
+            return
+        }
         try {
             let data = [];
             // 待完善
@@ -326,29 +329,30 @@ function parseString(str,preset){
 // }
 
 export function recurMerge (base, data) {
-  function recur(base, data) {
-    base && Object.keys(base).forEach(key => {
-      let bValue = base[key], dValue = data[key];
-      if (!dValue) return; // 新增加的属性
-      let bType = defineType(bValue), dType = defineType(dValue);
-      if (bType !== dType) return // 类型直接变了
-      if (bType === 'normal') base[key] = dValue; // 普通类型，直接赋值
-      if (bType === 'object') recur(base[key], dValue); // 对象类型
-      if (bType === 'array') handleArrayType(base[key], dValue);// 数组类型
-    })
+    function recur(base, data) {
+      base && Object.keys(base).forEach(key => {
+        let bValue = base[key], dValue = data[key];
+        if (!dValue) return; // 新增加的属性
+        let bType = defineType(bValue), dType = defineType(dValue);
+        if (bType !== dType) return // 类型直接变了
+        if (bType === 'normal') base[key] = dValue; // 普通类型，直接赋值
+        if (bType === 'object') recur(base[key], dValue); // 对象类型
+        if (bType === 'array') handleArrayType(base[key], dValue);// 数组类型
+      })
+    }
+    function handleArrayType (base, data) {
+      let emptyArray = base.length === 0;
+      let dType = defineType(data[0]), bType = !emptyArray ? defineType(base[0]) : dType;
+      data.forEach((item,index) => {
+        if (bType !== dType) return; // 类型变了
+        if (bType === 'normal') base[index] = item;
+        if (bType === 'object') recur(base[index] = deep_clone(base[0]), item)
+        if (bType === 'array') handleArrayType(base[index] =  deep_clone(base[0]), item)
+      })
+    }
+    recur (base, data);
+    return base;
   }
-  function handleArrayType (base, data) {
-    data.forEach((item,index) => {
-      let dType = defineType(item), bType = base[index] && defineType(base[index]);
-      if (bType !== dType) return; // 类型变了
-      if (bType === 'normal') base[index] = data[index]
-      if (bType === 'object') recur(base[index], data[index])
-      if (bType === 'array') handleArrayType (base[index], data[index])
-    })
-  }
-  recur (base, data);
-  return base;
-}
 
 function defineType (value) {
   if(Object.prototype.toString.call(value) === '[object Object]'){ // 对象

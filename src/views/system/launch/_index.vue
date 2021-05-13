@@ -7,7 +7,7 @@ import Curd from '@/components/curd'
 import { dataManagerApi as app_data_api } from '@/api/sys.app.js';
 import { dataManagerApi as layer_data_api } from '@/api/sys.layer.js';
 import { dataManagerApi as launch_data_api } from '@/api/sys.launch.js';
-import {IDString} from '../../common.js'
+import { dataManagerApi as exp_data_api } from '@/api/sys.experiment.js';
 export default {
     name:'launch',
     components:{
@@ -20,33 +20,41 @@ export default {
                 defaultColumns:true,
                 api:launch_data_api,
                 title:'启动分流',
-                actions:['edit','delete'],
-                render_first_action:true,
+                actions:['edit','launch'],
                 searchBarConfig:{
                     btn_group_center:'center',
                     actions:['submit','reset'],
                     inline:true,
                     'label-width':'100px',
                     formConfig:[
+                        // { attr:'type',type:'radio',label:'应用类型',data:
+                        //     [
+                        //         {value:1,label:'Web'},
+                        //         {value:2,label:'小程序'},
+                        //         {value:3,label:'Android'},
+                        //         {value:4,label:'IOS'}
+                        //     ],
+                        // },
+                        // { attr:'name',type:'input',label:'应用名称',placeholder:"请输入应用名称"},
                         { 
                             attr:'app_id',
                             type:'lazy-select',
                             api:app_data_api.select.api,
                             show:'name',
-                            dataIndex:'alias_id',
-                            label:'应用名称',
+                            dataIndex:'id',
+                            label:'选择所属应用',
                             onchange(val){
                                 //let index = this.formConfig.findIndex(i=>i.attr === 'layer_id');
                                 this.getLazyData('layer_id',layer_data_api.select.api + '?pageSize=100000&app_id='+val);
                             }
                         },
-                        {
+                        { 
                             attr:'layer_id',
                             type:'lazy-select',
                             api:'',
                             show:'name',
-                            dataIndex:'alias_id',
-                            label:'场景名称',
+                            dataIndex:'id',
+                            label:'选择所属场景',
                         },
                         { attr:'id',type:'input',label:'场景id',placeholder:"请输入场景id"},
                     ]
@@ -62,8 +70,8 @@ export default {
                             type:'lazy-select',
                             api:app_data_api.select.api,
                             show:'name',
-                            dataIndex:'alias_id',
-                            label:'选择应用',
+                            dataIndex:'id',
+                            label:'选择所属应用',
                             onchange(val){
                                 this.getLazyData('layer_id',layer_data_api.select.api + '?pageSize=100000&app_id='+val);
                             },
@@ -74,35 +82,25 @@ export default {
                             type:'lazy-select',
                             api:'',
                             show:'name',
-                            dataIndex:'alias_id',
-                            label:'选择场景',
+                            dataIndex:'id',
+                            label:'选择所属场景',
+                            is_required:true,
+                            onchange(val){
+                                this.getLazyData('ref_exp_id',exp_data_api.select.api + '?pageSize=100000&layer_id='+val);
+                            },
+                        },
+                        { 
+                            attr:'ref_exp_id',
+                            type:'lazy-select',
+                            api:'',
+                            show:'name',
+                            dataIndex:'id',
+                            label:'选择原始实验组',
                             is_required:true,
                         },
                         {
-                            "label": "对照组ID",
-                            "attr": "ref_exp_id",
-                            "type": "input",
-                            "param_type": "string",
-                            "is_required": true,
-                            rules:[{...IDString}],
-                            tab_name:'对照组配置'
-                        },
-                        {
-                            "label": "对照组数据接口",
-                            "attr": "ref_exp_api",
-                            "type": "input",
-                            "value": "",
-                            "param_type": "string",
-                            "is_required": true,
-                            "explain": "",
-                            tab_name:'对照组配置'
-                        },
-                        { attr:'hit',type:'number-input',label:'抽样流量',is_required:true,min:0,max:1,step:0.1},
-                        {attr:'verbose',label:'备注',type:'textarea'},
-                        {
-                            tab_name:'实验组配置',
                             attr:'exp_set',
-                            label:'',
+                            label:'实验组',
                             param_type:'array',
                             // "tab_name": "实验组",
                             children:[
@@ -112,50 +110,39 @@ export default {
                                     "type": "",
                                     "value": "",
                                     "param_type": "object",
+                                    "label-width": "0",
+                                    "disabled": false,
+                                    "disabled_on_edit": false,
                                     "explain": "",
                                     "children": [
                                         {
-                                            "label": "实验ID",
+                                            "label": "实验",
                                             "attr": "exp_id",
-                                            "type": "input",
-                                            "param_type": "string",
-                                            "is_required": true,
-                                            rules:[{...IDString}],
-                                            "explain": "",
-                                        },
-                                        {
-                                            "label": "实验名称",
-                                            "attr": "exp_name",
-                                            "type": "input",
-                                            "param_type": "string",
-                                            "is_required": true,
-                                            "explain": "",
-                                        },
-                                        {
-                                            "label": "实验数据接口",
-                                            "attr": "exp_api",
-                                            "type": "input",
+                                            "type": "lazy-select",
+                                            "api":"",
+                                            "value": "",
+                                            "label-width": "60",
                                             "param_type": "string",
                                             "is_required": true,
                                             "explain": "",
                                         },
                                         {
                                             "label": "分流占比",
-                                            "attr": "_weight",
+                                            "attr": "weight",
                                             "type": "number-input",
                                             "label-width": "60",
                                             "value": "",
                                             "param_type": "number",
                                             "is_required": true,
                                             "explain": "",
-                                            min:0,
-                                            max:1,
-                                            step:0.1
                                         }
-                                    ]
+                                    ],
+                                    "attrID": 3
                                 }
 						    ]
-                        }
+                        },
+                        // { attr:'name',type:'lay',label:'场景名称',placeholder:"请输入场景名称",is_required:true},
+                        { attr:'verbose',type:'input',label:'场景描述',placeholder:"请输入场景描述"},
                     ]
                 },
                 tableConfig:[
@@ -165,35 +152,19 @@ export default {
                     // },
                     {
                         key:'id',
-                        title:'ID(版本)',
+                        title:'场景id',
                     },
                     {
                         key:'name',
                         title:'场景名称',
                     },
                     {
-                        key:'translate_hit',
-                        title:'抽样流量',
-                    },
-                    {
-                        key:'ref_exp_id',
-                        title:'对照组标识',
-                    },
-                    {
-                        key:'ref_exp_api',
-                        title:'对照组API',
-                    },
-                    {
-                        key:'translate_exp_set',
-                        title:'分流配置',
-                    },
-                    {
-                        key:'translate_status',
+                        key:'status',
                         title:'状态',
                     },
                     {
                         key:'verbose',
-                        title:'备注',
+                        title:'场景描述',
                     },
                     {
                         key:'modified_date',
@@ -203,26 +174,7 @@ export default {
                         key:'modifier_name',
                         title:'修改人',
                     },
-                ],
-                onbeforerender(data){
-                    console.log(this.$refs.searchbar.$refs.searchForm.lazyData)
-                    data = data.map(i=>{
-                        i.translate_status = {
-                            1:'启动中',
-                            2:'已调整',
-                            3:'暂停',
-                            4:'推全',
-                            5:'结束'
-                        }[i.status];
-                        i.exp_set = JSON.parse(i.exp_set);
-                        i.translate_exp_set = i.exp_set.map(ele=>{
-                            return `${ele.exp_name}:${ele._weight * 100}'%`
-                        });
-                        i.translate_hit = i.hit * 100 +'%'
-                        return i
-                    })
-                    return data;
-                }
+                ]
             }
         }
     },

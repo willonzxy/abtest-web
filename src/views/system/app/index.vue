@@ -5,9 +5,10 @@
 <script>
 import Curd from '@/components/curd'
 import { dataManagerApi } from '@/api/sys.app.js';
-import { deep_clone } from '@/components/curd/util';
-import { numAndEn } from '@/components/curd/form/rule.js'
-import jsMd5 from 'js-md5'
+// import { deep_clone } from '@/components/curd/util';
+// import { numAndEn } from '@/components/curd/form/rule.js'
+// import jsMd5 from 'js-md5'
+import {IDString} from '../../common.js'
 export default {
     name:'app-m',
     components:{
@@ -35,15 +36,14 @@ export default {
                                 {value:4,label:'IOS'}
                             ],
                         },
-                        { attr:'id',type:'input',label:'应用id',placeholder:"请输入应用id"},
-                        { attr:'name',type:'input',label:'应用名称',placeholder:"请输入应用名称"},
-                    ]
+                        { attr:'alias_id',type:'input',label:'应用标识值',placeholder:"请输入应用标识值"},
+                    ],
                 },
                 addFormConfig:{
                     btn_group_center:'center',
                     'label-width':'100px',
                     inline:false,
-                    actions:['submit','reset'],
+                    actions:['submit'],
                     formConfig:[
                         { attr:'type',type:'radio',label:'应用类型',data:
                             [
@@ -60,13 +60,14 @@ export default {
                         },
                         { attr:'link',type:'input',label:'应用链接',placeholder:"请输入应用链接",disabled:true},
                         { attr:'name',type:'input',label:'应用名称',placeholder:"请输入应用名称",is_required:true},
-                        { attr:'verbose',type:'input',label:'应用描述',placeholder:"请输入应用描述"},
+                        { attr:'alias_id',type:'input',label:'应用标识值',placeholder:"标识值系统唯一，一但提交无法修改",is_required:true,maxlength:32,rules:[{...IDString}],disabled_on_edit:true},
+                        { attr:'verbose',type:'input',label:'备注',placeholder:"请输入备注"},
                     ]
                 },
                 tableConfig:[
                     {
-                        key:'id',
-                        title:'应用id',
+                        key:'alias_id',
+                        title:'应用标识值',
                     },
                     {
                         key:'name',
@@ -76,9 +77,13 @@ export default {
                         key:'link',
                         title:'应用链接',
                     },
+                    // {
+                    //     key:'shunt_api',
+                    //     title:'分流api',
+                    // },
                     {
                         key:'verbose',
-                        title:'应用描述',
+                        title:'备注',
                     },
                     {
                         key:'modified_date',
