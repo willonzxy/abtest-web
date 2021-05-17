@@ -36,7 +36,7 @@ export default {
                                 {value:4,label:'IOS'}
                             ],
                         },
-                        { attr:'alias_id',type:'input',label:'应用标识值',placeholder:"请输入应用标识值"},
+                        { attr:'alias_id',type:'input',label:'应用ID',placeholder:"请输入应用ID"},
                     ],
                 },
                 addFormConfig:{
@@ -60,14 +60,14 @@ export default {
                         },
                         { attr:'link',type:'input',label:'应用链接',placeholder:"请输入应用链接",disabled:true},
                         { attr:'name',type:'input',label:'应用名称',placeholder:"请输入应用名称",is_required:true},
-                        { attr:'alias_id',type:'input',label:'应用标识值',placeholder:"标识值系统唯一，一但提交无法修改",is_required:true,maxlength:32,rules:[{...IDString}],disabled_on_edit:true},
+                        { attr:'alias_id',type:'input',label:'应用ID',placeholder:"ID系统唯一，一但提交无法修改",is_required:true,maxlength:32,rules:[{...IDString}],disabled_on_edit:true},
                         { attr:'verbose',type:'input',label:'备注',placeholder:"请输入备注"},
                     ]
                 },
                 tableConfig:[
                     {
                         key:'alias_id',
-                        title:'应用标识值',
+                        title:'应用ID',
                     },
                     {
                         key:'name',

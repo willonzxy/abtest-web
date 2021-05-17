@@ -1,1 +1,1 @@
-export const IDString = { pattern: /^[0-9a-z_]+$/,  message: '只允许输入数字、小写字母、下划线', trigger: 'blur' };
+export const IDString = { pattern: /^[0-9a-z-]+$/,  message: '只允许输入数字、小写字母、横杠-', trigger: 'blur' };

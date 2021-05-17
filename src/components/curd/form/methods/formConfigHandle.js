@@ -36,7 +36,9 @@ export function handleFormConfig(formTitle,formConfig){
         if(item.change_submit){
             item.change = () => {
                 item.onchange && item.onchange.call(this,this.formInline[attr])
-                this.submit();
+                setTimeout(()=>{
+                    this.submit();
+                },100)
             }
         }
         // 4
@@ -231,7 +233,8 @@ export async function getLazyData(attr,api){
         await pullRemoteData.call(this,attr,api)
     }else{
         for(let key in this.lazyData){
-            await pullRemoteData.call(this,key,api || this.lazyData[key].api || '')
+            await pullRemoteData.call(this,key,api || this.lazyData[key].api || '');
+            // this.$emit('lazy-data-loaded')
         }
     }
     async function pullRemoteData(k,api){

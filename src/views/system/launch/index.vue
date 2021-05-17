@@ -7,7 +7,10 @@ import Curd from '@/components/curd'
 import { dataManagerApi as app_data_api } from '@/api/sys.app.js';
 import { dataManagerApi as layer_data_api } from '@/api/sys.layer.js';
 import { dataManagerApi as launch_data_api } from '@/api/sys.launch.js';
+import dayjs from 'dayjs'
 import {IDString} from '../../common.js'
+import request from '@/plugin/axios'
+var layer_info = {};
 export default {
     name:'launch',
     components:{
@@ -20,7 +23,7 @@ export default {
                 defaultColumns:true,
                 api:launch_data_api,
                 title:'启动分流',
-                actions:['edit','delete'],
+                actions:['edit','delete','copy-api'],
                 render_first_action:true,
                 searchBarConfig:{
                     btn_group_center:'center',
@@ -47,6 +50,7 @@ export default {
                             show:'name',
                             dataIndex:'alias_id',
                             label:'场景名称',
+                            change_submit:true,
                         },
                         { attr:'id',type:'input',label:'场景id',placeholder:"请输入场景id"},
                     ]
@@ -90,7 +94,7 @@ export default {
                         {
                             "label": "对照组数据接口",
                             "attr": "ref_exp_api",
-                            "type": "input",
+                            "type": "upload",
                             "value": "",
                             "param_type": "string",
                             "is_required": true,
@@ -134,7 +138,7 @@ export default {
                                         {
                                             "label": "实验数据接口",
                                             "attr": "exp_api",
-                                            "type": "input",
+                                            "type": "upload",
                                             "param_type": "string",
                                             "is_required": true,
                                             "explain": "",
@@ -164,11 +168,15 @@ export default {
                     //     title:'应用名称',
                     // },
                     {
-                        key:'id',
-                        title:'ID(版本)',
+                        key:'version',
+                        title:'操作版本',
                     },
                     {
-                        key:'name',
+                        key:'layer_id',
+                        title:'场景id',
+                    },
+                    {
+                        key:'layer_name',
                         title:'场景名称',
                     },
                     {
@@ -204,9 +212,8 @@ export default {
                         title:'修改人',
                     },
                 ],
-                onbeforerender(data){
-                    console.log(this.$refs.searchbar.$refs.searchForm.lazyData)
-                    data = data.map(i=>{
+                async onbeforerender(data){
+                    for(let i of data){
                         i.translate_status = {
                             1:'启动中',
                             2:'已调整',
@@ -219,15 +226,21 @@ export default {
                             return `${ele.exp_name}:${ele._weight * 100}'%`
                         });
                         i.translate_hit = i.hit * 100 +'%'
-                        return i
-                    })
+
+                        // 获取场景名称，并设置缓存
+                        let layer_id = i.layer_id;
+                        if(!layer_info[layer_id]){
+                            let res = await request(layer_data_api.select.api+'?alias_id='+layer_id)
+                            layer_info[layer_id] = res.data.list[0].name;
+                        }
+                        i.layer_name = layer_info[layer_id];
+
+                        i.modified_date = dayjs(i.modified_date).format('YYYY-MM-DD HH:mm:ss')
+                    }
                     return data;
                 }
             }
         }
-    },
-    methods:{
-        
     }
 }
 </script>

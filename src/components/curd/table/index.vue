@@ -28,6 +28,18 @@
                     div(v-if="row.id !== null && typeof row.id !== 'undefiend'")
                       template(v-if="config.render_first_action")
                         template(v-if="index===0")
+                          span(style="margin-left: 5px;" v-for="{type, label, handler,show_condition,name,explain} in tableGlobalDynamicActions" :key="label")
+                            el-tooltip(v-if="explain" :content="explain" effect="light" placement="top")
+                                el-button(
+                                    v-if="show_condition ? ()=>{injectThis(show_condition,row)} : showSearchBarAction(name)" 
+                                    :type="type || 'info'"
+                                    size="small"
+                                    @click="()=>{injectThis(handler,row)}") {{label}}
+                            el-button(
+                                v-else-if="show_condition ? ()=>{injectThis(show_condition,row)} : showSearchBarAction(name)" 
+                                :type="type || 'info'"
+                                size="small"
+                                @click="()=>{injectThis(handler,row)}") {{label}}
                           el-button(v-if="showEditBtn" type="text" size="small"  @click="edit(row.id,row)") 调整
                           //- el-popconfirm(title="这是一段内容确定删除吗？")
                           el-button(v-if="showDelBtn && row.status <= 4  " type="text" size="small" class="red" @click="remove(row.id)") 结束

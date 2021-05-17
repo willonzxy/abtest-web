@@ -46,7 +46,7 @@ export default {
                             dataIndex:'alias_id',
                             label:'应用名称',
                         },
-                        { attr:'alias_id',type:'input',label:'场景标识值',placeholder:"请输入场景标识值"},
+                        { attr:'alias_id',type:'input',label:'场景ID',placeholder:"请输入场景ID"},
                     ]
                 },
                 addFormConfig:{
@@ -65,7 +65,7 @@ export default {
                             is_required:true
                         },
                         { attr:'name',type:'input',label:'场景名称',placeholder:"请输入场景名称",is_required:true},
-                        { attr:'alias_id',type:'input',label:'场景标识值',placeholder:"请输入场景标识值",maxlength:32,rules:[{...IDString}],is_required:true},
+                        { attr:'alias_id',type:'input',label:'场景ID',placeholder:"请输入场景ID",maxlength:32,rules:[{...IDString}],is_required:true},
                         { attr:'verbose',type:'input',label:'备注',placeholder:"备注"},
                         
                     ]
@@ -73,7 +73,7 @@ export default {
                 tableConfig:[
                     {
                         key:'alias_id',
-                        title:'场景标识值',
+                        title:'场景ID',
                     },
                     {
                         key:'name',

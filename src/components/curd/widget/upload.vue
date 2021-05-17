@@ -5,7 +5,8 @@
       el-upload(slot="reference" style="position: relative;" v-on="$listeners" v-bind.sync="conf")
         div(class="xy-center full")
             i(v-if="!uploadUrl" class="el-icon-upload")
-            img(v-if="uploadUrl" :src="uploadUrl")
+            img(v-if="imgType" :src="uploadUrl")
+            //- input(v-else v-model="uploadUrl")
             span(v-if="uploadUrl" title="删除" class="corner-marker-error xy-center" @click.stop="remove")
                 i(class="el-icon-close")
         el-button(circle size="mini" icon="fa fa-external-link-square" v-show="uploadUrl"
@@ -53,6 +54,9 @@ import util from '@/libs/util'
                     ...config,
                     name: 'file' || config.attr,
                 }
+            },
+            imgType(){
+                return /.+(\.jpg|\.png|\.jpeg|\.gif|\.ico)/.test(this.uploadUrl)
             }
         },
         watch: {
@@ -70,8 +74,8 @@ import util from '@/libs/util'
 </script>
 <style lang="scss" scope>
     .el-upload{
-        width:100px;
-        height:50px;
+        width:100px !important;
+        height:50px !important;
         img{
             max-width: 100%;
             height:auto;
